@@ -5,8 +5,10 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -20,7 +22,6 @@ import com.pixabayusage.services.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -33,6 +34,10 @@ public class MainActivity extends AppCompatActivity {
     private ProgressBar progressBar;
     private TextView noImages;
     private EditText searchEditText;
+    private String searchFor = "random";
+    private final long delay = 1000;
+    private long last_text_edit = 0;
+    private final Handler handler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,8 +46,15 @@ public class MainActivity extends AppCompatActivity {
         initViews();
         initRecyclerView();
         addListeners();
-        retrieveImages();
+        retrieveImages(searchFor);
     }
+
+    private final Runnable searchInputCheck = () -> {
+        if (System.currentTimeMillis() > (last_text_edit + delay - 500)) {
+            searchFor = searchEditText.getText().toString();
+            retrieveImages(searchFor);
+        }
+    };
 
     private void addListeners() {
         searchEditText.addTextChangedListener(new TextWatcher() {
@@ -53,41 +65,35 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+                handler.removeCallbacks(searchInputCheck);
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
-                filterImages(editable.toString());
+                if (editable.length() > 0) {
+                    last_text_edit = System.currentTimeMillis();
+                    handler.postDelayed(searchInputCheck, delay);
+                }
             }
         });
     }
 
-    private void filterImages(String searchString) {
-        List<PixabayImage> searchedImageList = new ArrayList<>();
-        for (PixabayImage pixabayImage: imageList) {
-            if (pixabayImage.getTags().toLowerCase(Locale.ROOT).contains(searchString.toLowerCase(Locale.ROOT))) {
-                searchedImageList.add(pixabayImage);
-            }
-        }
-        recyclerViewAdapter.displayFilteredImages(searchedImageList);
-    }
-
     private void saveImagesResponse(PixabayImageList body) {
         progressBar.setVisibility(View.GONE);
-        int quantity = imageList.size();
+        imageList.clear();
         imageList.addAll(body.getHits());
-        recyclerViewAdapter.notifyItemRangeInserted(quantity, quantity + 20);
+        recyclerViewAdapter.notifyDataSetChanged();
         if (imageList.isEmpty()) noImages.setVisibility(View.VISIBLE);
         else noImages.setVisibility(View.GONE);
     }
 
-    private void retrieveImages() {
+    private void retrieveImages(String searchFor) {
         Service.generatePixabayService().getImages(
-                getString(R.string.API_KEY), "art", 1, 20)
+                getString(R.string.API_KEY), searchFor, 1, 20)
                 .enqueue(new Callback<PixabayImageList>() {
                     @Override
                     public void onResponse(Call<PixabayImageList> call, Response<PixabayImageList> response) {
+                        Log.d("Response", response.toString());
                         if (response.isSuccessful())
                             saveImagesResponse(response.body());
                         else progressBar.setVisibility(View.GONE);
@@ -102,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void initRecyclerView() {
         recyclerView.setHasFixedSize(true);
-        GridLayoutManager mLayoutManager = new GridLayoutManager(this, 2);
+        GridLayoutManager mLayoutManager = new GridLayoutManager(this, 1);
         recyclerView.setLayoutManager(mLayoutManager);
         imageList = new ArrayList<>();
         recyclerViewAdapter = new RecyclerViewAdapter(imageList);

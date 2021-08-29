@@ -37,6 +37,7 @@
                     android:background="@drawable/search_background"
                     android:drawableEnd="@drawable/search_button"
                     android:hint="@string/search_bar_hint"
+                    android:imeOptions="actionSearch"
                     android:inputType="text"
                     android:paddingStart="20dp"
                     android:paddingEnd="5dp"
@@ -70,6 +71,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="@string/no_images"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
