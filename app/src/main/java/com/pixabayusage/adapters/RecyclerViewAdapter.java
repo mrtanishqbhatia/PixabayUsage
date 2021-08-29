@@ -17,7 +17,7 @@ import java.util.List;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
-    private final List<PixabayImage> pixabayImageList;
+    private List<PixabayImage> pixabayImageList;
 
     public RecyclerViewAdapter(List<PixabayImage> pixabayImageList) {
         this.pixabayImageList = pixabayImageList;
@@ -41,6 +41,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public int getItemCount() {
         return pixabayImageList.size();
+    }
+
+    public void displayFilteredImages(List<PixabayImage> searchedImageList) {
+        pixabayImageList = searchedImageList;
+        notifyDataSetChanged();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
