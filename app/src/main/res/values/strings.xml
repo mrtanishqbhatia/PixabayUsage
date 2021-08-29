@@ -4,5 +4,11 @@
     <string name="API_KEY">23137001-2cc01bbae204f70c073ef8eb1</string>
     <string name="search_bar_hint">Search for anything.</string>
     <string name="no_images">No images found</string>
+    <string name="views">Views</string>
+    <string name="downloads">Downloads</string>
+    <string name="creator">Creator</string>
+    <string name="close">Close</string>
+    <string name="likes">Likes</string>
+    <string name="comments">Comments</string>
 
 </resources>

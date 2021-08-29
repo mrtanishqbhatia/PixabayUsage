@@ -16,8 +16,8 @@ import android.widget.TextView;
 
 import com.pixabayusage.R;
 import com.pixabayusage.adapters.RecyclerViewAdapter;
-import com.pixabayusage.models.PixabayImage;
-import com.pixabayusage.models.PixabayImageList;
+import com.pixabayusage.models.Image;
+import com.pixabayusage.models.ImageList;
 import com.pixabayusage.services.Service;
 
 import java.util.ArrayList;
@@ -30,7 +30,7 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private RecyclerViewAdapter recyclerViewAdapter;
-    private List<PixabayImage> imageList;
+    private List<Image> imageList;
     private ProgressBar progressBar;
     private TextView noImages;
     private EditText searchEditText;
@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void saveImagesResponse(PixabayImageList body) {
+    private void saveImagesResponse(ImageList body) {
         progressBar.setVisibility(View.GONE);
         imageList.clear();
         imageList.addAll(body.getHits());
@@ -90,9 +90,9 @@ public class MainActivity extends AppCompatActivity {
     private void retrieveImages(String searchFor) {
         Service.generatePixabayService().getImages(
                 getString(R.string.API_KEY), searchFor, 1, 20)
-                .enqueue(new Callback<PixabayImageList>() {
+                .enqueue(new Callback<ImageList>() {
                     @Override
-                    public void onResponse(Call<PixabayImageList> call, Response<PixabayImageList> response) {
+                    public void onResponse(Call<ImageList> call, Response<ImageList> response) {
                         Log.d("Response", response.toString());
                         if (response.isSuccessful())
                             saveImagesResponse(response.body());
@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onFailure(Call<PixabayImageList> call, Throwable t) {
+                    public void onFailure(Call<ImageList> call, Throwable t) {
 
                     }
                 });
