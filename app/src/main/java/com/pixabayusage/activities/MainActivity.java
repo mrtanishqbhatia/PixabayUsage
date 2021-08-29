@@ -20,10 +20,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
-
     private RecyclerView recyclerView;
     private RecyclerViewAdapter recyclerViewAdapter;
-    private List<PixabayImage> pixabayImageList;
+    private List<PixabayImage> imageList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,8 +34,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void saveImagesResponse(PixabayImageList body) {
-        int quantity = pixabayImageList.size();
-        pixabayImageList.addAll(body.getHits());
+        int quantity = imageList.size();
+        imageList.addAll(body.getHits());
         recyclerViewAdapter.notifyItemRangeInserted(quantity, quantity + 20);
     }
 
@@ -44,25 +43,25 @@ public class MainActivity extends AppCompatActivity {
         Service.generatePixabayService().getImages(
                 getString(R.string.API_KEY), "art", 1, 20)
                 .enqueue(new Callback<PixabayImageList>() {
-            @Override
-            public void onResponse(Call<PixabayImageList> call, Response<PixabayImageList> response) {
-                if (response.isSuccessful())
-                    saveImagesResponse(response.body());
-            }
+                    @Override
+                    public void onResponse(Call<PixabayImageList> call, Response<PixabayImageList> response) {
+                        if (response.isSuccessful())
+                            saveImagesResponse(response.body());
+                    }
 
-            @Override
-            public void onFailure(Call<PixabayImageList> call, Throwable t) {
+                    @Override
+                    public void onFailure(Call<PixabayImageList> call, Throwable t) {
 
-            }
-        });
+                    }
+                });
     }
 
     private void initRecyclerView() {
         recyclerView.setHasFixedSize(true);
         GridLayoutManager mLayoutManager = new GridLayoutManager(this, 2);
         recyclerView.setLayoutManager(mLayoutManager);
-        pixabayImageList = new ArrayList<>();
-        recyclerViewAdapter = new RecyclerViewAdapter(pixabayImageList);
+        imageList = new ArrayList<>();
+        recyclerViewAdapter = new RecyclerViewAdapter(imageList);
         recyclerView.setAdapter(recyclerViewAdapter);
     }
 

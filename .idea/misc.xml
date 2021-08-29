@@ -3,6 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/tbhatia/Android/AndroidStudioProjects/PixabayUsage/app/src/main/res/drawable/appbar_background.xml" value="0.2703125" />
+        <entry key="..\:/Users/tbhatia/Android/AndroidStudioProjects/PixabayUsage/app/src/main/res/drawable/search.xml" value="0.2703125" />
+        <entry key="..\:/Users/tbhatia/Android/AndroidStudioProjects/PixabayUsage/app/src/main/res/drawable/search_background.xml" value="0.2703125" />
+        <entry key="..\:/Users/tbhatia/Android/AndroidStudioProjects/PixabayUsage/app/src/main/res/drawable/search_button.xml" value="0.2703125" />
+        <entry key="..\:/Users/tbhatia/Android/AndroidStudioProjects/PixabayUsage/app/src/main/res/layout/activity_image.xml" value="0.1793478260869565" />
         <entry key="..\:/Users/tbhatia/Android/AndroidStudioProjects/PixabayUsage/app/src/main/res/layout/recycler_item.xml" value="0.1793478260869565" />
       </map>
     </option>

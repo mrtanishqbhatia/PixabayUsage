@@ -2,4 +2,6 @@
     <string name="app_name">PixabayUsage</string>
     <string name="image_from_pixabay">Image from Pixabay</string>
     <string name="API_KEY">23137001-2cc01bbae204f70c073ef8eb1</string>
+    <string name="search_bar_hint">Search for an image</string>
+
 </resources>
